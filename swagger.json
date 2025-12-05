@@ -29,36 +29,22 @@
     { "BearerAuth": [] }
   ],
   "paths": {
-    "/auth/register": {
-      "post": {
+    "/auth/google/url": {
+      "get": {
         "tags": ["Auth"],
-        "summary": "Register a new user",
-        "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": { "$ref": "#/definitions/UserRegister" }
-          }
-        ],
+        "summary": "Get the Google OAuth consent URL",
         "responses": {
-          "201": { "description": "Created" },
-          "400": { "description": "Bad Request" },
-          "409": { "description": "Conflict" }
+          "200": { "description": "OK" },
+          "500": { "description": "Internal Server Error" }
         }
       }
     },
-    "/auth/login": {
-      "post": {
+    "/auth/google/callback": {
+      "get": {
         "tags": ["Auth"],
-        "summary": "Login with email and password",
+        "summary": "Handle the OAuth callback from Google",
         "parameters": [
-          {
-            "name": "body",
-            "in": "body",
-            "required": true,
-            "schema": { "$ref": "#/definitions/UserLogin" }
-          }
+          { "name": "code", "in": "query", "required": true, "type": "string" }
         ],
         "responses": {
           "200": { "description": "OK" },

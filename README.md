@@ -109,6 +109,6 @@ This project fulfills the CSE 341 Final Project Requirements:
 ✔ MongoDB with ≥ 4 collections  
 ✔ CRUD routes + authentication  
 ✔ OAuth integration  
-✔ API docs at `/api-docs`  
+✔ API docs at `/api/api-docs`  
 ✔ Clear architecture  
 ✔ Ready for team collaboration  

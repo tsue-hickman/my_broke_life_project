@@ -159,7 +159,7 @@
     },
     "/transactions": {
       "get": {
-        "tags": ["Transactions", "Untested"],
+        "tags": ["Transactions"],
         "summary": "Get all transactions for the authenticated user",
         "parameters": [
           { "name": "from", "in": "query", "type": "string", "format": "date" },
@@ -178,7 +178,7 @@
         }
       },
       "post": {
-        "tags": ["Transactions", "Untested"],
+        "tags": ["Transactions"],
         "summary": "Create a new transaction",
         "parameters": [
           { "name": "body", "in": "body", "required": true, "schema": { "$ref": "#/definitions/TransactionInput" } }
@@ -191,7 +191,7 @@
     },
     "/transactions/{id}": {
       "get": {
-        "tags": ["Transactions", "Untested"],
+        "tags": ["Transactions"],
         "summary": "Get a transaction by ID",
         "parameters": [
           { "name": "id", "in": "path", "required": true, "type": "string" }
@@ -202,7 +202,7 @@
         }
       },
       "put": {
-        "tags": ["Transactions", "Untested"],
+        "tags": ["Transactions"],
         "summary": "Update a transaction",
         "parameters": [
           { "name": "id", "in": "path", "required": true, "type": "string" },
@@ -215,7 +215,7 @@
         }
       },
       "delete": {
-        "tags": ["Transactions", "Untested"],
+        "tags": ["Transactions"],
         "summary": "Delete a transaction",
         "parameters": [
           { "name": "id", "in": "path", "required": true, "type": "string" }

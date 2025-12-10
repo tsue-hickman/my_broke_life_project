@@ -79,4 +79,68 @@ describe("Test Categories Routes", function () {
     expect(res.body).toHaveProperty("createdAt");
     mockCategory = res.body;
   });
+  // test the get /:id route
+  test("responds to get /:id", async () => {
+    const res = await request(app)
+      .get("/" + mockCategory._id)
+      .set("Authorization", "Bearer " + token);
+    if (Object.hasOwn(res.body, "error")) {
+      console.log(res.body);
+    }
+    //excpect json and 200 to come back
+    expect(res.header["content-type"]).toBe("application/json; charset=utf-8");
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toHaveProperty("userId");
+    expect(res.body).toHaveProperty("name");
+    expect(res.body).toHaveProperty("createdAt");
+    expect(res.body.name).toBe("Test Category");
+    expect(res.body.type).toBe("expense");
+  });
+
+  // test the put /:id route
+  test("responds to put /:id", async () => {
+    data = {
+      name: "Updated Category",
+      type: "income",
+      color: "green",
+      icon: "dollar-sign",
+    };
+
+    const res = await request(app)
+      .put("/" + mockCategory._id)
+      .set("Authorization", "Bearer " + token)
+      .send(data);
+
+    if (Object.hasOwn(res.body, "error")) {
+      console.log(res.body);
+    }
+    //expect json and 200 to come back. Then check for a few fields in the json
+    expect(res.header["content-type"]).toBe("application/json; charset=utf-8");
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toHaveProperty("userId");
+    expect(res.body).toHaveProperty("name");
+    expect(res.body).toHaveProperty("createdAt");
+    expect(res.body.name).toBe("Updated Category");
+    expect(res.body.type).toBe("income");
+    expect(res.body.color).toBe("green");
+    expect(JSON.stringify(res.body.userId)).toEqual(
+      JSON.stringify(mockUser._id)
+    );
+  });
+
+  // test the delete /:id route
+  test("responds to delete /:id", async () => {
+    const res = await request(app)
+      .delete("/" + mockCategory._id)
+      .set("Authorization", "Bearer " + token);
+    if (Object.hasOwn(res.body, "error")) {
+      console.log(res.body);
+    }
+
+    //excpect json and 200 to come back
+    expect(res.header["content-type"]).toBe("application/json; charset=utf-8");
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toHaveProperty("message");
+    expect(res.body.message).toBe("Category deleted successfully");
+  });
 });

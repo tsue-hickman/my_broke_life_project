@@ -83,5 +83,64 @@ describe("Test Reports Routes", function () {
     //shutdown the mock database
     dbHandler.closeDatabase();
   });
+  
+   // test the get /monthly route without query params (should use current month)
+  test("responds to get /monthly with current month", async () => {
+    const res = await request(app)
+      .get("/monthly")
+      .set("Authorization", "Bearer " + token);
+    
+    if (Object.hasOwn(res.body, "error")) {
+      console.log(res.body);
+    }
+    
+    //excpect json and 200 to come back
+    expect(res.header["content-type"]).toBe("application/json; charset=utf-8");
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toHaveProperty("month");
+    expect(res.body).toHaveProperty("total_income");
+    expect(res.body).toHaveProperty("total_expenses");
+    expect(res.body).toHaveProperty("categories");
+    
+    //check that the totals match what we created
+    expect(res.body.total_income).toBe(1000);
+    expect(res.body.total_expenses).toBe(50);
+    expect(res.body.categories).toBeInstanceOf(Array);
+  });
+
+  // test the get /monthly route with a specific month query param
+  test("responds to get /monthly with specific month", async () => {
+    const currentDate = new Date();
+    const month = `${currentDate.getFullYear()}-${String(currentDate.getMonth() + 1).padStart(2, '0')}`;
+    
+    const res = await request(app)
+      .get("/monthly?month=" + month)
+      .set("Authorization", "Bearer " + token);
+    
+    if (Object.hasOwn(res.body, "error")) {
+      console.log(res.body);
+    }
+    
+    //excpect json and 200 to come back
+    expect(res.header["content-type"]).toBe("application/json; charset=utf-8");
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toHaveProperty("month");
+    expect(res.body.month).toBe(month);
+  });
+
+  // test with invalid month format
+  test("returns 400 for invalid month format", async () => {
+    const res = await request(app)
+      .get("/monthly?month=invalid-date")
+      .set("Authorization", "Bearer " + token);
+    
+    if (Object.hasOwn(res.body, "error")) {
+      console.log(res.body);
+    }
+    
+    //should return 400 bad request
+    expect(res.statusCode).toBe(400);
+    expect(res.body).toHaveProperty("error");
+  });
 
 });
